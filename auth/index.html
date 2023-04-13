@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dropbox JavaScript SDK</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/10.34.0/Dropbox-sdk.min.js" integrity="sha512-PTKs+sPreCz6TLyLj9CYx3LxxPZmY5k1k5Yb5Y5mUQzngf/XUxNdtyWwYjcPcOZJm4wSYiicZr0kotLmDIRFmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module">function s(n){const e=Object.create(null);return typeof n!="string"||(n=n.trim().replace(/^(\?|#|&)/,""),!n)||n.split("&").forEach(i=>{const o=i.replace(/\+/g," ").split("=");let t=o.shift(),c=o.length>0?o.join("="):void 0;t=decodeURIComponent(t),c=c===void 0?null:decodeURIComponent(c),e[t]===void 0?e[t]=c:Array.isArray(e[t])?e[t].push(c):e[t]=[e[t],c]}),e}const a="93r1pkexlv5qfip";function l(){const n=s(window.location.hash).access_token;return console.log("NEW TOKEN = ",n),n}function u(){return!!l()}function d(n,e){var i=document.getElementById("files"),o=document.createElement("h3");o.innerHTML=n,i?.appendChild(o),e.forEach(function(t){var c=document.createElement("li");c.innerHTML=t.name,i?.appendChild(c)})}function r(n){const e=document.getElementById(n);e&&(e.style.display="block")}if(u()){r("authed-section");const n=l(),e=new Dropbox.Dropbox({accessToken:n}),i="/FotosWeb",o=document.querySelector("[data-auth-token]");o&&(o.innerHTML=n),e.filesListFolder({path:i}).then(function(t){d(i,t.result.entries)}).catch(function(t){console.error(t)})}else{console.log("NO ESTAS AUTENTICADO"),r("pre-auth-section");var f=new Dropbox.Dropbox({clientId:a});f.auth.getAuthenticationUrl("http://localhost:3000/auth").then(n=>{const e=document.getElementById("authlink");e&&(e.href=n)})}
+</script></head>
+<body>
+
+  <div class="container main">
+    <div id="pre-auth-section" style="display:none;">
+      <p>This example takes the user through Dropbox's API OAuth flow using <code>Dropbox.getAuthenticationUrl()</code> method [<a href="http://dropbox.github.io/dropbox-sdk-js/Dropbox.html#getAuthenticationUrl">docs</a>] and then uses the generated access token to list the contents of their root directory.</p>
+      <a href="" id="authlink" class="button" data-button-login>Authenticate</a>
+      <p class="info">Once authenticated, it will use the access token to list the files in your root directory.</p>
+    </div>
+
+    <div id="authed-section" style="display:none;">
+      <p>You have successfully authenticated. Below are the contents of your root directory. They were fetched using the SDK and access token.</p>
+      <p data-auth-token></p>
+      <ul id="files"></ul>
+    </div>
+  </div>
+
+  
+</body>
+</html>
